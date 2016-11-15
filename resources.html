@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>AngularJS | Zero to Hero</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/default.css">
+</head>
+
+<body ng-app="App">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+  	<div class="container">
+  		<div class="navbar-header">
+  			<a class="navbar-brand" href="index.html">Angular | Zero to Hero</a>
+  		</div>
+  	</div>
+  </nav>
+
+  <div class="container main-content">
+    <div class="row">
+      <h1>ngResource - CRUD RESTful API</h1>
+      <ol>
+        <li><a href="https://docs.angularjs.org/api/ngResource">Download</a> angular-resource.js from Angular website</li>
+        <li>Include angular-resource.js in your HTML</li>
+        <li>Load the module in your application by adding it as a dependent module</li>
+      </ol>
+    </div>
+    <br>
+    <div class="row">
+  		<div class="col-md-8"
+  		     ng-controller="PersonListController">
+  			<div class="row">
+  				<div class="col-md-12">
+  					<form class="form-inline well well-sm">
+  						<span class="glyphicon glyphicon-search"></span>
+
+  						<div class="form-group">
+  							<input type="text"
+  							       class="form-control"
+  							       id="name"
+  							       ng-model="search"
+  							       placeholder="Search name..."
+  									/>
+  						</div>
+
+  						<span class="glyphicon glyphicon-sort-by-attributes"></span>
+
+  						<div class="form-group">
+  							<select class="form-control"
+  							        ng-model="order">
+  								<option value="name">Name (ASC)</option>
+  								<option value="-name">Name (DEC)</option>
+  								<option value="email">Email (ASC)</option>
+  								<option value="-email">Email (DEC)</option>
+  							</select>
+  						</div>
+
+  					</form>
+
+  					<table class="table table-bordered" infinite-scroll="loadMore()" infinite-scroll-distance="1">
+  						<tr>
+  							<th>#</th>
+  							<th>Name
+  								<span ng-click="order = 'name'"
+  								      class="glyphicon glyphicon-menu-up"></span>
+  								<span ng-click="order = '-name'"
+  								      class="glyphicon glyphicon-menu-down"></span>
+  							</th>
+  							<th>Email
+  								<span ng-click="order = 'email'"
+  								      class="glyphicon glyphicon-menu-up"></span>
+  								<span ng-click="order = '-email'"
+  								      class="glyphicon glyphicon-menu-down"></span>
+  							</th>
+  							<th>Birthday</th>
+  						</tr>
+
+  						<tr ng-repeat="person in filterpersons = (contacts.persons | filter:sensitiveSearch | orderBy:order)"
+  						    ng-style="{
+  							 'background-color': person.email == contacts.selectedPerson.email ? 'lightgray' : ''
+  						}"
+  						    ng-click="contacts.selectedPerson = person">
+  							<td>{{ $index }}</td>
+  							<td>{{ person.name }}</td>
+  							<td>{{ person.email }}</td>
+  							<td>{{ person.birthdate | date:"longDate" }}</td>
+  						</tr>
+
+  						<tr ng-show="filteredPersons.length == 0">
+  							<td colspan="4">
+  								<div class="alert alert-info">
+  									<p class="text-center">No results found for search term '{{ search }}'</p>
+  								</div>
+  							</td>
+  						</tr>
+  					</table>
+  				</div>
+  			</div>
+  		</div>
+  		<div class="col-md-4"
+  		     ng-controller="PersonDetailController">
+
+  			<div class="panel panel-default">
+  				<div class="panel-heading">Details</div>
+  				<div class="panel-body">
+
+  					<dl>
+  						<dt>Name</dt>
+  						<dd>{{contacts.selectedPerson.name}}</dd>
+  						<dt>Email</dt>
+  						<dd>{{contacts.selectedPerson.email}}</dd>
+  						<dt>Birthday</dt>
+  						<dd>{{contacts.selectedPerson.birthdate | date:"longDate"}}</dd>
+  						<dt>Phonenumber</dt>
+  						<dd>{{contacts.selectedPerson.phonenumber}}</dd>
+  						<dt>Address</dt>
+  						<dd>{{contacts.selectedPerson.address}}</dd>
+  						<dt>City</dt>
+  						<dd>{{contacts.selectedPerson.city}}</dd>
+  						<dt>Country</dt>
+  						<dd>{{contacts.selectedPerson.country}}</dd>
+  					</dl>
+
+  				</div>
+  			</div>
+  		</div>
+  	</div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="js/vendor/angular-resource.min.js"></script>
+  <script src="js/vendor/ng-infinite-scroll.min.js"></script>
+  <script src="js/resources.js"></script>
+</body>
+</html>

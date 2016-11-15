@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>AngularJS | Zero to Hero</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/vendor/ladda-themeless.min.css">
+  <link rel="stylesheet" href="css/default.css">
+</head>
+
+<body ng-app="App">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+  	<div class="container">
+  		<div class="navbar-header">
+  			<a class="navbar-brand" href="index.html">Angular | Zero to Hero</a>
+  		</div>
+  	</div>
+  </nav>
+
+  <div class="container main-content">
+    <div class="row">
+  		<div class="col-md-8"
+  		     ng-controller="PersonListController">
+  			<div class="row">
+  				<div class="col-md-12">
+  					<form class="form-inline well well-sm">
+  						<span class="glyphicon glyphicon-search"></span>
+
+  						<div class="form-group">
+  							<input type="text"
+  							       class="form-control"
+  							       id="name"
+  							       ng-model="search"
+  							       placeholder="Search name..."
+  									/>
+  						</div>
+
+  						<span class="glyphicon glyphicon-sort-by-attributes"></span>
+
+  						<div class="form-group">
+  							<select class="form-control"
+  							        ng-model="order">
+  								<option value="name">Name (ASC)</option>
+  								<option value="-name">Name (DEC)</option>
+  								<option value="email">Email (ASC)</option>
+  								<option value="-email">Email (DEC)</option>
+  							</select>
+  						</div>
+
+  					</form>
+
+  					<table class="table table-bordered" infinite-scroll="loadMore()" infinite-scroll-distance="1">
+  						<tr>
+  							<th>#</th>
+  							<th>Name
+  								<span ng-click="order = 'name'"
+  								      class="glyphicon glyphicon-menu-up"></span>
+  								<span ng-click="order = '-name'"
+  								      class="glyphicon glyphicon-menu-down"></span>
+  							</th>
+  							<th>Email
+  								<span ng-click="order = 'email'"
+  								      class="glyphicon glyphicon-menu-up"></span>
+  								<span ng-click="order = '-email'"
+  								      class="glyphicon glyphicon-menu-down"></span>
+  							</th>
+  							<th>Birthday</th>
+  						</tr>
+
+  						<tr ng-repeat="person in contacts.persons"
+  						    ng-style="{
+  							 'background-color': person.email == contacts.selectedPerson.email ? 'lightgray' : ''
+  						}"
+  						    ng-click="contacts.selectedPerson = person">
+  							<td>{{ $index }}</td>
+  							<td>{{ person.name }}</td>
+  							<td>{{ person.email }}</td>
+  							<td>{{ person.birthdate | date:"longDate" }}</td>
+  						</tr>
+  					</table>
+
+            <div ng-show="contacts.persons.length == 0 && !contacts.isLoading">
+              <div class="alert alert-info">
+                <p class="text-center">No results found for search term '{{ search }}'</p>
+              </div>
+            </div>
+
+
+            <div class="spinner" ng-show="contacts.isLoading">
+              <span us-spinner="{radius:8, width:5, length: 3, lines:9}"></span>
+              <p>Loading...</p>
+            </div>
+
+  				</div>
+  			</div>
+  		</div>
+  		<div class="col-md-4"
+  		     ng-controller="PersonDetailController">
+
+  			<div class="panel panel-default">
+  				<div class="panel-heading">Details</div>
+  				<div class="panel-body">
+            <form class="form-horizontal" ng-submit="save()" novalidate>
+              <div class="form-group">
+              	<label class="col-sm-2 control-label">Name</label>
+              	<div class="col-sm-10">
+              		<input type="text"
+              		       class="form-control"
+              		       name="name"
+              		       ng-model="contacts.selectedPerson.name"
+              		       required />
+              	</div>
+              </div>
+              <div class="form-group">
+              	<label class="col-sm-2 control-label">Email</label>
+              	<div class="col-sm-10">
+              		<input type="email"
+              		       name="email"
+              		       class="form-control"
+              		       ng-model="contacts.selectedPerson.email"
+              		       required />
+              	</div>
+              </div>
+              <div class="form-group">
+              	<label class="col-sm-2 control-label">Photo</label>
+              	<div class="col-sm-10">
+              		<input type="text"
+              		       class="form-control"
+              		       name="photo"
+              		       ng-model="contacts.selectedPerson.photo"
+              				/>
+              	</div>
+              </div>
+              <div class="form-group">
+              	<label class="col-sm-2 control-label">Sex</label>
+              	<div class="col-sm-10">
+
+              		<select name="sex"
+              		        class="form-control"
+              		        ng-model="contacts.selectedPerson.sex"
+              		        id="">
+              			<option value="M">Male</option>
+              			<option value="F">Female</option>
+              		</select>
+              	</div>
+              </div>
+              <div class="form-group">
+              	<label class="col-sm-2 control-label">Birthday</label>
+              	<div class="col-sm-10">
+              		<input type="text"
+              		       name="bday"
+              		       class="form-control"
+              		       ng-model="contacts.selectedPerson.birthdate "
+              		       bs-datepicker
+              				/>
+              	</div>
+
+              </div>
+              <div class="form-group">
+              	<label class="col-sm-2 control-label">Phone</label>
+              	<div class="col-sm-10">
+              		<input type="tel"
+              		       name="phone"
+              		       class="form-control"
+              		       ng-model="contacts.selectedPerson.phonenumber"
+              				/>
+              	</div>
+              </div>
+              <div class="form-group">
+              	<label class="col-sm-2 control-label">Address</label>
+              	<div class="col-sm-10">
+              		<input type="text"
+              		       name="address"
+              		       class="form-control"
+              		       ng-model="contacts.selectedPerson.address"
+              				/>
+              	</div>
+              </div>
+
+              <div class="form-group">
+              	<label class="col-sm-2 control-label">City</label>
+              	<div class="col-sm-10">
+              		<input type="text"
+              		       name="city"
+              		       class="form-control"
+              		       ng-model="contacts.selectedPerson.city"
+              				/>
+              	</div>
+
+              </div>
+              <div class="form-group">
+              	<label class="col-sm-2 control-label">Country</label>
+              	<div class="col-sm-10">
+              		<input type="text"
+              		       name="country"
+              		       class="form-control"
+              		       ng-model="contacts.selectedPerson.country"
+              				/>
+              	</div>
+              </div>
+              <div class="buttons">
+              	<button class="btn btn-primary btn-block"
+              	        ladda="contacts.isSaving"
+              	        type="submit">Save
+              	</button>
+              </div>
+            </form>
+  					<!-- <dl>
+  						<dt>Name</dt>
+  						<dd>{{contacts.selectedPerson.name}}</dd>
+  						<dt>Email</dt>
+  						<dd>{{contacts.selectedPerson.email}}</dd>
+  						<dt>Birthday</dt>
+  						<dd>{{contacts.selectedPerson.birthdate | date:"longDate"}}</dd>
+  						<dt>Phonenumber</dt>
+  						<dd>{{contacts.selectedPerson.phonenumber}}</dd>
+  						<dt>Address</dt>
+  						<dd>{{contacts.selectedPerson.address}}</dd>
+  						<dt>City</dt>
+  						<dd>{{contacts.selectedPerson.city}}</dd>
+  						<dt>Country</dt>
+  						<dd>{{contacts.selectedPerson.country}}</dd>
+  					</dl> -->
+
+  				</div>
+  			</div>
+  		</div>
+  	</div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="js/vendor/angular-resource.min.js"></script>
+  <script src="js/vendor/ng-infinite-scroll.min.js"></script>
+  <script src="js/vendor/spin.js"></script>
+  <script src="js/vendor/angular-spinner.js"></script>
+  <script src="js/vendor/jcs-auto-validate.min.js"></script>
+  <script src="js/vendor/ladda.js"></script>
+  <script src="js/vendor/angular-ladda.js"></script>
+  <script src="js/watches.js"></script>
+</body>
+</html>

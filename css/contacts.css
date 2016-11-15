@@ -1,0 +1,19 @@
+.main-content {
+  position: relative;
+  margin-top: 150px;
+}
+
+.form-header {
+  position: fixed;
+  top: 12.3%;
+  left: 5%;
+  width: 66.6%;
+  display: block;
+}
+
+.contacts-detail {
+  width: 33.3%;
+  position: fixed;
+  top: 12.3%;
+  right: 1%;
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Angular Auto Validate</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/vendor/ladda-themeless.min.css">
+  <link rel="stylesheet" href="css/default.css">
+</head>
+<body ng-app="App">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="index.html">Angular | Zero to Hero</a>
+      </div>
+    </div>
+  </nav>
+
+	<div class="container main-content" ng-controller="MinMaxCtrl">
+    <h1>Angular JS form auto-validate</h1>
+    <p>* indicates a required field!</p>
+		<form ng-submit="onSubmit()"
+          novalidate="novalidate"
+          >
+			<div class="form-group">
+				<label for="text">Name*</label>
+				<input type="text"
+               class="form-control"
+               ng-model="formModel.name"
+               id="name"
+               ng-minlength="3"
+               required="required"/>
+			</div>
+			<div class="form-group">
+				<label for="email">Email*</label>
+				<input type="email"
+               class="form-control"
+               ng-model="formModel.email"
+               id="email"
+               required="required"
+               name="email"
+               />
+        <!-- <pre>Validation: {{ theForm.email.$error | json }}</pre>
+        <pre>Field Valid: {{ theForm.email.$valid }}</pre>
+        <pre>Form pristine: {{theForm.$pristine}}</pre>
+        <pre>Form submitted: {{ theForm.$submitted }}</pre> -->
+			</div>
+      <div class="form-group">
+        <label for="username">Username*</label>
+				<input type="username"
+               class="form-control"
+               ng-model="formModel.username"
+               id="username"
+               ng-pattern="/^[A-Za-z0-9_]{1,32}$/"
+               ng-minlength="7"
+               required="required"/>
+      </div>
+      <div class="form-group">
+        <label for="age">Age*</label>
+				<input type="number"
+               class="form-control"
+               ng-model="formModel.age"
+               id="age"
+               min="18"
+               max="64"
+               ng-min-err-type="tooYoung"
+               ng-max-err-type="tooOld"
+               required="required"/>
+      </div>
+			<div class="form-group">
+				<label for="sex">Sex*</label>
+				<select name="sex"
+				        id="sex"
+				        class="form-control"
+                ng-model="formModel.sex"
+                required="required">
+          <option value="">Please Choose</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+				</select>
+			</div>
+      <div class="form-group">
+        <label for="password">Password*</label>
+        <input type="password"
+               class="form-control"
+               ng-model="formModel.password"
+               id="password"
+               ng-minlength="8"
+               required="required"
+               />
+      </div>
+			<div class="form-group">
+				<button class="btn btn-primary"
+                ladda="submitting"
+                data-style="expand-right"
+                type="submit">
+        <span ng-show="submitting">Registering</span>
+        <span ng-show="!submitting">Register</span>
+        </button>
+			</div>
+		</form>
+		<pre>{{ formModel | json }}</pre>
+	</div>
+
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="js/vendor/bootstrap.min.js"></script> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="js/vendor/jcs-auto-validate.min.js"></script>
+  <script src="js/vendor/spin.js"></script>
+  <script src="js/vendor/ladda.js"></script>
+  <script src="js/vendor/angular-ladda.js"></script>
+  <script src="js/auto-validate.js"></script>
+</body>
+</html>

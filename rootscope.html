@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="App">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Root Scope | Angular Zero to Hero</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/default.css">
+  <link rel="stylesheet" href="css/rootscope.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="index.html">Angular | Zero to Hero</a>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="intro">
+          <ol>
+            <li>Root scope gave a name variable for itself, parent & child don't have their scope name variable</li>
+            <li>The parent and schild scope accessing their parent scope via scope inheritance</li>
+            <li>Then parent scope gave itself a name variable</li>
+            <li>Then child scope gave itself a name variable</li>
+            <li>Every scope of every child derive from top level root scope via dependencies injection of $rootscope</li>
+          </ol>
+        </div>
+        <div class="root">
+          <label for="">Root</label>
+          <input type="text" ng-model="name">
+          <p>{{ name }}</p>
+          <div class="row">
+            <div class="">
+              <div class="parent" ng-controller="ParentController">
+                <label>Parent</label>
+                <input type="text" ng-model="name" />
+                <p>{{name}}</p>
+
+                <div class="child" ng-controller="ChildController">
+                    <label>Child</label>
+                    <input type="text" ng-model="name" />
+                    <button class="btn" ng-click="reset()">Reset</button>
+                    <p>{{name}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="js/rootscope.js"></script>
+</body>
+
+</html>
